@@ -1,0 +1,7 @@
+/* .ds-student-table > tr:nth-child(odd) {
+    background-color: pink
+} */
+
+ .pink-row {
+     background-color: pink
+ }

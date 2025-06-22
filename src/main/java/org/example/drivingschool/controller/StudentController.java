@@ -1,0 +1,51 @@
+package org.example.drivingschool.controller;
+
+import org.example.drivingschool.models.Student;
+import org.example.drivingschool.repository.StudentRepository;
+import org.example.drivingschool.repository.InstructorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/students")
+public class StudentController {
+
+    private final StudentRepository repository;
+    private final InstructorRepository InstructorRepository;
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+
+    public StudentController(StudentRepository repository, InstructorRepository InstructorRepository) {
+        this.repository = repository;
+        this.InstructorRepository = InstructorRepository;
+    }
+
+    @GetMapping
+    public List<Student> getAllStudents() {
+        return repository.getAllStudents();
+    }
+    @GetMapping("/{name}")
+    public ResponseEntity<Student> getStudentById(@PathVariable String name) {
+        Optional<Student> student = repository.getStudentById(name);
+        logger.info("trying to log student with id:{}", name);
+        return student.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<String> createStudent(@RequestBody Student student) {
+        repository.createStudent(student);
+        return ResponseEntity.ok("Cyborg created successfully!");
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<String> deleteStudent(@PathVariable String name) {
+        repository.deleteStudent(name);
+        return ResponseEntity.ok("Student deleted successfully!");
+    }
+}

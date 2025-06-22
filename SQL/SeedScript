@@ -1,0 +1,34 @@
+DROP TABLE student CASCADE;
+DROP TABLE instructor CASCADE;
+
+CREATE TABLE students (
+    name varchar(50) PRIMARY KEY,
+    courseNr int,
+    instructorName varchar(50),
+    hoursDone int
+);
+
+CREATE TABLE instructor (
+    instructorName varchar(50) PRIMARY KEY,
+    description varchar(150),
+    carNr int
+);
+
+INSERT INTO students (name, courseId, instructorName, hoursDone)
+VALUES
+('Ania', 4, 'Gosia', 10),
+('Marcin', 3, 'Andrzej', 30),
+('Maria', 5, 'Kasia', 15),
+('Wojtek', 3, 'Gosia', 3),
+('Ola', 5, 'Marcin', 0),
+('Michal', 4, 'Gosia', 25)
+;
+
+INSERT INTO instructor (instructorName, description, carNr)
+VALUES
+('Gosia', 'Nr 1 wszyscy kochaja', 1),
+('Kasia', 'No tak 6/10', 2),
+('Andrzej', 'narzeka i kombinuje', 3),
+('Marcin', 'nowy i nieogarniety', 4),
+('Ewa','Queen', 5)
+;
