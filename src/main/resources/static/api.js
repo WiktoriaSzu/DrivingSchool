@@ -5,7 +5,7 @@ export function getStudents(callback) {
     $.get(apiBaseUrl, callback);
 }
 
-export function createStudent (studentData, callback){
+export function createStudent (studentData, callback) {
     $.ajax({
         url: apiBaseUrl,
         method: "POST",
@@ -13,4 +13,14 @@ export function createStudent (studentData, callback){
         data: JSON.stringify(studentData),
         success: callback
     })
+}
+
+export function deleteStudent(id, callback) {
+    if (confirm("Are you sure you want to delete this student?")) {
+         $.ajax({
+            url: `${apiBaseUrl}/${id}`,
+            type: "DELETE",
+            success: callback
+         });
+    }
 }
