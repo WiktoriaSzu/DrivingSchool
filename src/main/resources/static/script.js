@@ -104,9 +104,3 @@ function loginsuccess(){
     alert("welcome!")
 }
 
-
-export function toggleCyborgFormButtons(isEditing) {
-    $("#cancelCyborgEdit").toggleClass("d-none", !isEditing);
-    $("#createCyborgButton").toggleClass("d-none", isEditing);
-    $("#updateCyborgButton").toggleClass("d-none", !isEditing);
-}
