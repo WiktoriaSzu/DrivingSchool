@@ -14,3 +14,14 @@ export function createStudent (studentData, callback){
         success: callback
     })
 }
+
+export function deleteStudent(name, callback) {
+    if (confirm("Are you sure you want to delete this student?")) {
+        $.ajax({
+            url: `${apiBaseUrl}/${name}`,
+            type: "DELETE",
+            success: callback
+        });
+        console.log("wiwiwi")
+    }
+}

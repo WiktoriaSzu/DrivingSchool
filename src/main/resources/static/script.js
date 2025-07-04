@@ -1,4 +1,4 @@
-import {createStudent} from "./api.js";
+import {createStudent, deleteStudent} from "./api.js";
 
 console.log("heelo world");
 
@@ -24,7 +24,7 @@ function loadStudents(){
         responseData.forEach((student, i) => {
             const pink = i % 2 === 0 ? "pink-row" : ""
             tableBody.append(`
-                    <tr class="${pink}">
+                    <tr>
                         <td>${student.name}</td>
                         <td>${student.courseId}</td>
                         <td>${student.instructorName}</td>
@@ -103,4 +103,9 @@ function onLogInClick(event) {
 function loginsuccess(){
     alert("welcome!")
 }
+
+$("#studentTable").on("click", ".delete-cyborg", function () {
+    const name = $(this).closest("tr").data("name");
+    deleteStudent(name, loadStudents);
+});
 
