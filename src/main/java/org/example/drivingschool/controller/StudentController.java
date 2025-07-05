@@ -29,10 +29,11 @@ public class StudentController {
     public List<Student> getAllStudents() {
         return repository.getAllStudents();
     }
-    @GetMapping("/{name}")
-    public ResponseEntity<Student> getStudentById(@PathVariable String name) {
-        Optional<Student> student = repository.getStudentById(name);
-        logger.info("trying to log student with id:{}", name);
+
+    @GetMapping("/{Id}")
+    public ResponseEntity<Student> getStudentById(@PathVariable int Id) {
+        Optional<Student> student = repository.getStudentById(Id);
+        logger.info("trying to log student with id:{}", Id);
         return student.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -43,9 +44,9 @@ public class StudentController {
         return ResponseEntity.ok("Cyborg created successfully!");
     }
 
-    @DeleteMapping("/{name}")
-    public ResponseEntity<String> deleteStudent(@PathVariable String name) {
-        repository.deleteStudent(name);
+    @DeleteMapping("/{Id}")
+    public ResponseEntity<String> deleteStudent(@PathVariable int Id) {
+        repository.deleteStudent(Id);
         return ResponseEntity.ok("Student deleted successfully!");
     }
 }

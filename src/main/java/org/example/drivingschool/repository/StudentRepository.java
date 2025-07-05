@@ -24,7 +24,8 @@ public class StudentRepository {
                     rs.getString("name"),
                     rs.getInt("courseId"),
                     rs.getString("instructorName"),
-                    rs.getInt("hoursDone")
+                    rs.getInt("hoursDone"),
+                    rs.getInt("id")
             );
 
     public List<Student> getAllStudents() {
@@ -32,9 +33,9 @@ public class StudentRepository {
         return jdbcTemplate.query(sql, studentRowMapper);
     }
 
-    public Optional<Student> getStudentById(String name) {
-        String sql = "SELECT * FROM students WHERE name = ?";
-        Optional<Student> student = jdbcTemplate.query(sql, studentRowMapper, name).stream().findFirst();
+    public Optional<Student> getStudentById(int Id) {
+        String sql = "SELECT * FROM students WHERE id = ?";
+        Optional<Student> student = jdbcTemplate.query(sql, studentRowMapper, Id).stream().findFirst();
         return student;
     }
 
@@ -43,13 +44,13 @@ public class StudentRepository {
         jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone());
     }
 
-    public int updateStudent(String name, Student student) {
-        String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ? WHERE name = ?";
-        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), name);
+    public int updateStudent(int Id, Student student) {
+        String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ? WHERE Id = ?";
+        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), Id);
     }
 
-    public void deleteStudent(String name) {
-        String sql = "DELETE FROM students WHERE name = ?";
-        jdbcTemplate.update(sql, name);
+    public void deleteStudent(int Id) {
+        String sql = "DELETE FROM students WHERE Id = ?";
+        jdbcTemplate.update(sql, Id);
     }
 }

@@ -24,11 +24,12 @@ function loadStudents(){
         responseData.forEach((student, i) => {
             const pink = i % 2 === 0 ? "pink-row" : ""
             tableBody.append(`
-                    <tr>
+                    <tr data-Id="${student.Id}">
                         <td>${student.name}</td>
                         <td>${student.courseId}</td>
                         <td>${student.instructorName}</td>
                         <td>${student.hoursDone}</td>
+                        <td>${student.Id}</td>
                         <td>
                         <button class="btn btn-info btn-sm manage-enhancements">Manage Instructor</button>
                         <button class="btn btn-warning btn-sm edit-cyborg">Edit</button>
@@ -40,11 +41,12 @@ function loadStudents(){
     });
 }
 
-export function editStudent(name, course, instructorname,hours) {
-    $("#studentNameb").val(name);
+export function editStudent(name, course, instructorname,hours, Id) {
+    $("#studentName").val(name);
     $("#studentCourse").val(course);
     $("#studentInstructorName").val(instructorname);
     $("#studentHours").val(hours);
+    $("#studentId").val(Id);
 }
 
 
@@ -58,7 +60,8 @@ export function handleCreateStudentSubmit(event) {
         name: $("#studentName").val(),
         courseId: $("#studentCourseNr").val(),
         instructorName: $("#studentInstructor").val(),
-        hoursDone: $("#studentHoursDone").val()
+        hoursDone: $("#studentHoursDone").val(),
+        Id: $("#studentId").val(),
     };
     console.log(studentData)
 
@@ -105,7 +108,7 @@ function loginsuccess(){
 }
 
 $("#studentTable").on("click", ".delete-cyborg", function () {
-    const name = $(this).closest("tr").data("name");
-    deleteStudent(name, loadStudents);
+    const Id = $(this).closest("tr").data("Id");
+    deleteStudent(Id, loadStudents);
 });
 

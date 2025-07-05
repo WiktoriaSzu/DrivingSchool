@@ -5,12 +5,14 @@ public class Student {
     private int courseId;
     private String instructorName;
     private int hoursDone;
+    private int id;
 
-    public Student(String name, int courseId, String instructorName, int hoursDone) {
+    public Student(String name, int courseId, String instructorName, int hoursDone, int id) {
         this.name = name;
         this.courseId = courseId;
         this.instructorName = instructorName;
         this.hoursDone = hoursDone;
+        this.id = id;
     }
 
     public String getInstructorName() {
