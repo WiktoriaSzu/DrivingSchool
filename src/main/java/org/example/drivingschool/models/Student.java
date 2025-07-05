@@ -46,5 +46,13 @@ public class Student {
     public void setHoursDone(int hoursDone) {
         this.hoursDone = hoursDone;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
 

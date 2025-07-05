@@ -15,10 +15,10 @@ export function createStudent (studentData, callback){
     })
 }
 
-export function deleteStudent(Id, callback) {
+export function deleteStudent(id, callback) {
     if (confirm("Are you sure you want to delete this student?")) {
         $.ajax({
-            url: `${apiBaseUrl}/${Id}`,
+            url: `${apiBaseUrl}/${id}`,
             type: "DELETE",
             success: callback
         });

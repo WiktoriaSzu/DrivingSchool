@@ -33,9 +33,9 @@ public class StudentRepository {
         return jdbcTemplate.query(sql, studentRowMapper);
     }
 
-    public Optional<Student> getStudentById(int Id) {
+    public Optional<Student> getStudentById(int id) {
         String sql = "SELECT * FROM students WHERE id = ?";
-        Optional<Student> student = jdbcTemplate.query(sql, studentRowMapper, Id).stream().findFirst();
+        Optional<Student> student = jdbcTemplate.query(sql, studentRowMapper, id).stream().findFirst();
         return student;
     }
 
@@ -44,13 +44,13 @@ public class StudentRepository {
         jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone());
     }
 
-    public int updateStudent(int Id, Student student) {
+    public int updateStudent(int id, Student student) {
         String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ? WHERE Id = ?";
-        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), Id);
+        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), id);
     }
 
-    public void deleteStudent(int Id) {
-        String sql = "DELETE FROM students WHERE Id = ?";
-        jdbcTemplate.update(sql, Id);
+    public void deleteStudent(int id) {
+        String sql = "DELETE FROM students WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

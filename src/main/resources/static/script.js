@@ -24,12 +24,12 @@ function loadStudents(){
         responseData.forEach((student, i) => {
             const pink = i % 2 === 0 ? "pink-row" : ""
             tableBody.append(`
-                    <tr data-Id="${student.Id}">
+                    <tr data-id="${student.id}">
                         <td>${student.name}</td>
                         <td>${student.courseId}</td>
                         <td>${student.instructorName}</td>
                         <td>${student.hoursDone}</td>
-                        <td>${student.Id}</td>
+                        <td>${student.id}</td>
                         <td>
                         <button class="btn btn-info btn-sm manage-enhancements">Manage Instructor</button>
                         <button class="btn btn-warning btn-sm edit-cyborg">Edit</button>
@@ -108,7 +108,7 @@ function loginsuccess(){
 }
 
 $("#studentTable").on("click", ".delete-cyborg", function () {
-    const Id = $(this).closest("tr").data("Id");
-    deleteStudent(Id, loadStudents);
+    const id = $(this).closest("tr").data("id");
+    deleteStudent(id, loadStudents);
 });
 

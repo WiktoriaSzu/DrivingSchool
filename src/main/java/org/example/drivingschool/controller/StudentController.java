@@ -27,13 +27,14 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getAllStudents() {
-        return repository.getAllStudents();
+        List<Student> out = repository.getAllStudents();
+        return out;
     }
 
-    @GetMapping("/{Id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable int Id) {
-        Optional<Student> student = repository.getStudentById(Id);
-        logger.info("trying to log student with id:{}", Id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudentById(@PathVariable int id) {
+        Optional<Student> student = repository.getStudentById(id);
+        logger.info("trying to log student with id:{}", id);
         return student.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
