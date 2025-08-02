@@ -1,22 +1,22 @@
-import {createStudent, deleteStudent} from "./api.js";
+import {getStudents, createStudent, deleteStudent, saveStudent} from "./api.js";
 
 console.log("heelo world");
 
 function callback(){
     console.log("Document is ready");
-    const createStudentButton = document.getElementById("createStudentButton");
+    const createStudentButton = document.getElementById("addStudentButton");
     createStudentButton.addEventListener("click", handleCreateStudentSubmit);
     const displayStudentsButton = document.getElementById("fetchStudents");
     displayStudentsButton.addEventListener("click", loadStudents);
-    const loginBtn = document.getElementById("loginbtn");
-    loginBtn.addEventListener("click", onLogInClick);
+    // const loginBtn = document.getElementById("loginbtn");
+    // loginBtn.addEventListener("click", onLogInClick);
 }
 
 document.addEventListener("DOMContentLoaded", callback);
 
 function loadStudents(){
     console.log("dddd");
-    $.get("http://localhost:8080/api/students", function(responseData){
+    getStudents(function(responseData){
         console.log("eeee");
         const tableBody = $("#studentTable");
         // $("#studentTable").addClass("ds-student-table");
@@ -24,16 +24,17 @@ function loadStudents(){
         responseData.forEach((student, i) => {
             const pink = i % 2 === 0 ? "pink-row" : ""
             tableBody.append(`
-                    <tr data-id="${student.id}">
+                    <tr data-id="${student.id}" data-name="${student.name}" data-instructor-name="${student.instructorName}" 
+                    data-hours-done="${student.hoursDone}" data-course-id="${student.courseId}">
                         <td>${student.name}</td>
                         <td>${student.courseId}</td>
                         <td>${student.instructorName}</td>
                         <td>${student.hoursDone}</td>
                         <td>${student.id}</td>
                         <td>
-                        <button class="btn btn-info btn-sm manage-enhancements">Manage Instructor</button>
-                        <button class="btn btn-warning btn-sm edit-cyborg">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-cyborg">Delete</button>
+                        <button class="btn btn-info btn-sm manage-instructor">Manage Instructor</button>
+                        <button class="btn btn-warning btn-sm edit-student">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-student">Delete</button>
                         </td>
                     </tr>
             `)
@@ -41,12 +42,12 @@ function loadStudents(){
     });
 }
 
-export function editStudent(name, course, instructorname,hours, Id) {
-    $("#studentName").val(name);
-    $("#studentCourse").val(course);
-    $("#studentInstructorName").val(instructorname);
-    $("#studentHours").val(hours);
-    $("#studentId").val(Id);
+export function editStudent(name, courseId, instructorName,hoursDone) {
+    console.log("editStudent: ", name, courseId, instructorName, hoursDone);
+    $("#editStudentName").val(name);
+    $("#editStudentCourseNr").val(courseId);
+    $("#editStudentInstructor").val(instructorName);
+    $("#editStudentHoursDone").val(hoursDone);
 }
 
 
@@ -55,60 +56,63 @@ export function handleCreateStudentSubmit(event) {
 
     alert("TESTING");
 
-
+    const studentId = $("#studentId").val();
     const studentData = {
         name: $("#studentName").val(),
         courseId: $("#studentCourseNr").val(),
         instructorName: $("#studentInstructor").val(),
         hoursDone: $("#studentHoursDone").val(),
-        Id: $("#studentId").val(),
     };
     console.log(studentData)
 
     createStudent(studentData, function(response){
         console.log(response);
     });
-    /*saveStudent(studentData, studentName, () => {
-        alert(studentName ? "Student updated!" : "Student added!");
+
+    saveStudent(studentData, studentId, () => {
+        alert(studentId ? "Student updated!" : "Student added!");
         $("#studentForm")[0].reset();
         $("#studentName").val("");
-        toggleCyborgFormButtons(false)
+        toggleStudentFormButtons(false)
         loadStudents();
-    });*/
+    });
 }
 
-function login(logInData, callback) {
-    $.ajax({
-        url: `http://localhost:8080/api/login`,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(logInData),
-        success: callback,
-        error: loginerror
-    })
-}
+$("#studentTable").on("click", ".edit-student", function () {
+    console.log("edit clicked");
+    $('#studentsModal').modal('show');
+    const row = $(this).closest("tr");
+    toggleStudentFormButtons(true)
+    editStudent(
+        row.data("name"),
+        row.data("course-id"),
+        row.data("instructor-name"),
+        row.data("hours-done"),
+    );
+});
 
-function loginerror(){
-        alert("incorrect credentials");
-}
+$("#cancelStudentEdit").on("click", function(){
+    $("#studentForm")[0].reset();
+    $("#studentId").val("");
+    toggleStudentFormButtons(false);
+})
 
-
-
-function onLogInClick(event) {
-    event.preventDefault();
-    const logInData = {
-        password: $("#password").val(),
-        username: $("#username").val(),
-    }
-    login(logInData, loginsuccess);
-}
-
-function loginsuccess(){
-    alert("welcome!")
-}
-
-$("#studentTable").on("click", ".delete-cyborg", function () {
+$("#studentTable").on("click", ".delete-student", function () {
     const id = $(this).closest("tr").data("id");
     deleteStudent(id, loadStudents);
 });
+
+$("#cancelStudentEdit").on("click", function(){
+    $("#studentForm")[0].reset();
+    $("#studentId").val("");
+    toggleStudentFormButtons(false);
+})
+
+export function toggleStudentFormButtons(isEditing) {
+    $("#cancelStudentEdit").toggleClass("d-none", !isEditing);
+    $("#createStudentButton").toggleClass("d-none", isEditing);
+    $("#updateStudentButton").toggleClass("d-none", !isEditing);
+}
+
+
 

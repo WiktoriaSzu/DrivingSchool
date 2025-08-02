@@ -28,72 +28,64 @@
     <!-- Cyborg data will be inserted here dynamically -->
     </tbody>
 </table>
-<h2>Add / Update Student</h2>
-<form id="studentForm">
-    <input type="hidden" id="cyborgId">
+<h2>Add Student</h2>
+<form id="addStudentForm">
+    <input type="hidden" id="addStudentId">
     <div class="mb-2">
         <label>Name:</label>
-        <input type="text" id="studentName" class="form-control" required>
+        <input type="text" id="addStudentName" class="form-control" required>
     </div>
     <div class="mb-2">
         <label>Course Nr:</label>
-        <input type="number" id="studentCourseNr" class="form-control" required>
+        <input type="number" id="addStudentCourseNr" class="form-control" required>
     </div>
     <div class="mb-2">
         <label>Instructor:</label>
-        <input type="text" id="studentInstructor" class="form-control" required>
+        <input type="text" id="addStudentInstructor" class="form-control" required>
     </div>
     <div class="mb-2">
         <label>Hours done:</label>
-        <input type="text" id="studentHoursDone" class="form-control" required>
+        <input type="number" id="addStudentHoursDone" class="form-control" required>
     </div>
-    <button type="submit" id="createStudentButton" class="btn btn-success">Add Student</button>
-    <button type="submit" id="updateStudentButton" class="btn btn-success d-none">Update Student</button>
-    <button type="button" id="cancelStudentEdit" class="btn btn-secondary d-none">Cancel Edit</button>
+    <button type="submit" id="addStudentButton" class="btn btn-success">Add Student</button>
 </form>
-<h3>Log in</h3>
-<form>
-    <label for="username">Username</label>
-    <input type="text" id="username" class="form-control" required>
-    <label for="password">Password</label>
-    <input type="password" id="password" class="form-control" required>
-    <button type="submit" id="loginbtn" class="btn btn-success">Log in</button>
-</form>
-<div class="modal fade" id="instructorssModal" tabindex="-1" aria-labelledby="instructorsModalLabel" aria-hidden="true">
+<!--<h3>Log in</h3>-->
+<!--<form>-->
+<!--    <label for="username">Username</label>-->
+<!--    <input type="text" id="username" class="form-control" required>-->
+<!--    <label for="password">Password</label>-->
+<!--    <input type="password" id="password" class="form-control" required>-->
+<!--    <button type="submit" id="loginbtn" class="btn btn-success">Log in</button>-->
+<!--</form>-->
+<div class="modal fade" id="studentsModal" tabindex="-1" aria-labelledby="studentsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Manage Instructors</h5>
+                <h5 class="modal-title">Manage Students</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul id="instructorsList" class="list-group">
-                    <!-- Enhancements will be listed here -->
-                </ul>
                 <hr>
-                <h6>Add / Update Instructor</h6>
-                <form id="enhancementForm">
-                    <input type="hidden" id="enhancementId">
-                    <input type="hidden" id="cyborgEnhancementId">
+                <h6>Update Student</h6>
+                <form id="editStudentForm">
+                    <input type="hidden" id="editStudentId">
                     <div class="mb-2">
                         <label>Name:</label>
-                        <input type="text" id="enhancementName" class="form-control" required>
+                        <input type="text" id="editStudentName" class="form-control" required>
                     </div>
                     <div class="mb-2">
-                        <label>Description:</label>
-                        <input type="text" id="enhancementDescription" class="form-control">
+                        <label>Course Nr:</label>
+                        <input type="text" id="editStudentCourseNr" class="form-control">
                     </div>
                     <div class="mb-2">
-                        <label>Type:</label>
-                        <input type="text" id="enhancementType" class="form-control">
+                        <label>Instructor:</label>
+                        <input type="text" id="editStudentInstructor" class="form-control">
                     </div>
                     <div class="mb-2">
-                        <label>Manufacturer:</label>
-                        <input type="text" id="enhancementManufacturer" class="form-control">
+                        <label>Hours done:</label>
+                        <input type="number" id="editStudentHoursDone" class="form-control">
                     </div>
-                    <button type="submit" id="createInstructorButton" class="btn btn-success">add Instructor</button>
-                    <button type="submit" id="updateInstructorButton" class="btn btn-success d-none">Update Instructor</button>
-                    <button type="button" id="cancelInstructorEdit" class="btn btn-secondary d-none">Cancel Instructor</button>
+                    <button type="submit" id="updateStudentButton" class="btn btn-success d-none">Update Student</button>
                 </form>
             </div>
         </div>

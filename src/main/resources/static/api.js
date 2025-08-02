@@ -25,3 +25,17 @@ export function deleteStudent(id, callback) {
         console.log("wiwiwi")
     }
 }
+
+export function saveStudent (studentData, id, callback){
+    const url = id ? `${apiBaseUrl}/${id}` : apiBaseUrl;
+    const method = id ? "PUT" : "POST";
+
+    $.ajax({
+        url: url,
+        type: method,
+        contentType: "application/json",
+        data: JSON.stringify(studentData),
+        success: callback
+    });
+    console.log("student saved?")
+}
