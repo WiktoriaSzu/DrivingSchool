@@ -50,4 +50,10 @@ public class StudentController {
         repository.deleteStudent(Id);
         return ResponseEntity.ok("Student deleted successfully!");
     }
+
+    @PutMapping("/{Id}")
+    public ResponseEntity<String> updateStudent(@PathVariable int Id, @RequestBody Student student) {
+        repository.updateStudent(Id, student);
+        return ResponseEntity.ok("Cyborg created successfully!");
+    }
 }

@@ -7,6 +7,8 @@ function callback(){
     const createStudentButton = document.getElementById("addStudentButton");
     createStudentButton.addEventListener("click", handleCreateStudentSubmit);
     const displayStudentsButton = document.getElementById("fetchStudents");
+    const editStudentButton = document.getElementById("updateStudentButton");
+    editStudentButton.addEventListener("click", handleEditStudentSubmit);
     displayStudentsButton.addEventListener("click", loadStudents);
     // const loginBtn = document.getElementById("loginbtn");
     // loginBtn.addEventListener("click", onLogInClick);
@@ -42,12 +44,32 @@ function loadStudents(){
     });
 }
 
-export function editStudent(name, courseId, instructorName,hoursDone) {
+export function updateStudentModalFields(id, name, courseId, instructorName, hoursDone) {
     console.log("editStudent: ", name, courseId, instructorName, hoursDone);
+    $("#editStudentId").val(id);
     $("#editStudentName").val(name);
     $("#editStudentCourseNr").val(courseId);
     $("#editStudentInstructor").val(instructorName);
     $("#editStudentHoursDone").val(hoursDone);
+}
+
+export function handleEditStudentSubmit(event) {
+    event.preventDefault();
+
+    const studentId = $("#editStudentId").val();
+    const studentData = {
+        name: $("#editStudentName").val(),
+        courseId: $("#editStudentCourseNr").val(),
+        instructorName: $("#editStudentInstructor").val(),
+        hoursDone: $("#editStudentHoursDone").val(),
+    };
+    console.log(studentData)
+
+    saveStudent(studentData, studentId, () => {
+        alert("Student updated!");
+        $('#studentsModal').modal('hide');
+        loadStudents();
+    });
 }
 
 
@@ -56,18 +78,18 @@ export function handleCreateStudentSubmit(event) {
 
     alert("TESTING");
 
-    const studentId = $("#studentId").val();
+    const studentId = $("#addStudentId").val();
     const studentData = {
-        name: $("#studentName").val(),
-        courseId: $("#studentCourseNr").val(),
-        instructorName: $("#studentInstructor").val(),
-        hoursDone: $("#studentHoursDone").val(),
+        name: $("#addStudentName").val(),
+        courseId: $("#addStudentCourseNr").val(),
+        instructorName: $("#addStudentInstructor").val(),
+        hoursDone: $("#addStudentHoursDone").val(),
     };
     console.log(studentData)
 
-    createStudent(studentData, function(response){
-        console.log(response);
-    });
+    // createStudent(studentData, function(response){
+    //     console.log(response);
+    // });
 
     saveStudent(studentData, studentId, () => {
         alert(studentId ? "Student updated!" : "Student added!");
@@ -83,19 +105,14 @@ $("#studentTable").on("click", ".edit-student", function () {
     $('#studentsModal').modal('show');
     const row = $(this).closest("tr");
     toggleStudentFormButtons(true)
-    editStudent(
+    updateStudentModalFields(
+        row.data("id"),
         row.data("name"),
         row.data("course-id"),
         row.data("instructor-name"),
         row.data("hours-done"),
     );
 });
-
-$("#cancelStudentEdit").on("click", function(){
-    $("#studentForm")[0].reset();
-    $("#studentId").val("");
-    toggleStudentFormButtons(false);
-})
 
 $("#studentTable").on("click", ".delete-student", function () {
     const id = $(this).closest("tr").data("id");
