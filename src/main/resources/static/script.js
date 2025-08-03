@@ -14,6 +14,50 @@ function callback(){
     // loginBtn.addEventListener("click", onLogInClick);
 }
 
+const NameInput = document.getElementById("nameInput")
+NameInput.addEventListener("keyup", searchName);
+
+export function searchName() {
+    let input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("nameInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("studentTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+const InstructorInput = document.getElementById("instructorInput")
+InstructorInput.addEventListener("keyup", searchByInstructor);
+
+export function searchByInstructor() {
+    let instructorInput, instructorFilter, instructorTable, instructorTr, instructorTd, instructorI, instructorTxtValue;
+    instructorInput = document.getElementById("instructorInput");
+    instructorFilter = instructorInput.value.toUpperCase();
+    instructorTable = document.getElementById("studentTable");
+    instructorTr = instructorTable.getElementsByTagName("tr");
+    for (instructorI = 0; instructorI < instructorTr.length; instructorI++) {
+        instructorTd = instructorTr[instructorI].getElementsByTagName("td")[2];
+        if (instructorTd) {
+            instructorTxtValue = instructorTd.textContent || instructorTd.innerText;
+            if (instructorTxtValue.toUpperCase().indexOf(instructorFilter) > -1) {
+                instructorTr[instructorI].style.display = "";
+            } else {
+                instructorTr[instructorI].style.display = "none";
+            }
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", callback);
 
 function loadStudents(){
@@ -32,17 +76,17 @@ function loadStudents(){
                         <td>${student.courseId}</td>
                         <td>${student.instructorName}</td>
                         <td>${student.hoursDone}</td>
-                        <td>${student.id}</td>
                         <td>
-                        <button class="btn btn-info btn-sm manage-instructor">Manage Instructor</button>
-                        <button class="btn btn-warning btn-sm edit-student">Edit</button>
-                        <button class="btn btn-danger btn-sm delete-student">Delete</button>
+                        <button class="btn btn-info btn-sm edit-student">Edit</button>
+                        <button class="btn btn-warning btn-sm delete-student">Delete</button>
                         </td>
                     </tr>
             `)
         });
     });
 }
+
+
 
 export function updateStudentModalFields(id, name, courseId, instructorName, hoursDone) {
     console.log("editStudent: ", name, courseId, instructorName, hoursDone);
@@ -130,6 +174,7 @@ export function toggleStudentFormButtons(isEditing) {
     $("#createStudentButton").toggleClass("d-none", isEditing);
     $("#updateStudentButton").toggleClass("d-none", !isEditing);
 }
+
 
 
 

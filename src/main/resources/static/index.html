@@ -12,15 +12,15 @@
 <body class="container mt-4">
 <h1>Driving School Management System</h1>
 <button id="fetchStudents" class="btn btn-primary">Load Students</button>
-
+<input type="text" id="nameInput" onkeyup="searchName()" placeholder="Search for student.." title="Type in a name">
+<input type="text" id="instructorInput" onkeyup="searchByInstructor()" placeholder="Search by instructor.." title="Type in an instructor">
 <table class="table table-striped mt-3">
     <thead>
     <tr>
         <th>Name</th>
         <th>Course Nr</th>
         <th>Instructor</th>
-        <th>Hours done</th>
-        <th>ID</th>
+        <th>Hours done sortTable(3)</th>
         <th>Options</th>
     </tr>
     </thead>
