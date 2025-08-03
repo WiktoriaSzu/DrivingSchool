@@ -20,7 +20,7 @@
         <th>Name</th>
         <th>Course Nr</th>
         <th>Instructor</th>
-        <th>Hours done sortTable(3)</th>
+        <th>Hours done</th>
         <th>Options</th>
     </tr>
     </thead>
@@ -40,8 +40,12 @@
         <input type="number" id="addStudentCourseNr" class="form-control" required>
     </div>
     <div class="mb-2">
-        <label>Instructor:</label>
-        <input type="text" id="addStudentInstructor" class="form-control" required>
+        <label for="addStudentInstructor">Instructor:</label>
+        <select name="instructor" id="addStudentInstructor">
+            <option value="Gosia">Gosia</option>
+            <option value="Kasia">Kasia</option>
+            <option value="Andrzej">Andrzej</option>
+        </select>
     </div>
     <div class="mb-2">
         <label>Hours done:</label>

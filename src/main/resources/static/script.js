@@ -137,8 +137,8 @@ export function handleCreateStudentSubmit(event) {
 
     saveStudent(studentData, studentId, () => {
         alert(studentId ? "Student updated!" : "Student added!");
-        $("#studentForm")[0].reset();
-        $("#studentName").val("");
+        $("#addStudentForm")[0].reset();
+        $("#addStudentName").val("");
         toggleStudentFormButtons(false)
         loadStudents();
     });
