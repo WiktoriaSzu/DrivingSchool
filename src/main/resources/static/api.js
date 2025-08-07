@@ -5,6 +5,10 @@ export function getStudents(callback) {
     $.get(apiBaseUrl, callback);
 }
 
+export function getInstructors(callback) {
+    $.get(instructorsApiUrl, callback);
+}
+
 export function createStudent (studentData, callback){
     $.ajax({
         url: apiBaseUrl,

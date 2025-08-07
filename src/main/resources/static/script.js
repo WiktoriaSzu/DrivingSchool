@@ -1,6 +1,7 @@
-import {getStudents, createStudent, deleteStudent, saveStudent} from "./api.js";
+import {getStudents, createStudent, deleteStudent, saveStudent, getInstructors} from "./api.js";
 
 console.log("heelo world");
+loadInstructors();
 
 function callback(){
     console.log("Document is ready");
@@ -129,6 +130,17 @@ function loadStudents(){
     });
 }
 
+function loadInstructors(){
+    getInstructors(function(responseData){
+        const formOptions = $("#addStudentInstructor");
+        formOptions.empty();
+        responseData.forEach((instructor) => {
+            formOptions.append(`
+                <option value="${instructor.instructorName}">${instructor.instructorName}</option>
+        `)
+        })
+    })
+}
 
 
 export function updateStudentModalFields(id, name, courseId, instructorName, hoursDone) {
