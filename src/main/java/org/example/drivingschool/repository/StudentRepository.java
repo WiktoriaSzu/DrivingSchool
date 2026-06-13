@@ -1,14 +1,12 @@
 package org.example.drivingschool.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.example.drivingschool.models.Student;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class StudentRepository {
@@ -25,7 +23,9 @@ public class StudentRepository {
                     rs.getInt("courseId"),
                     rs.getString("instructorName"),
                     rs.getInt("hoursDone"),
-                    rs.getInt("id")
+                    rs.getInt("id"),
+                    rs.getBoolean("firstPayment"),
+                    rs.getBoolean("secondPayment")
             );
 
     public List<Student> getAllStudents() {
@@ -41,12 +41,12 @@ public class StudentRepository {
 
     public void createStudent(Student student) {
         String sql = "INSERT INTO students (name, courseId, instructorName, hoursDone) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone());
+        jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), student.isFirstPayment(), student.isSecondPayment());
     }
 
     public int updateStudent(int id, Student student) {
-        String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ? WHERE Id = ?";
-        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), id);
+        String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ?, firstPayment = ?, secondPayment = ?,  WHERE Id = ?";
+        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), id, student.isFirstPayment(), student.isSecondPayment());
     }
 
     public void deleteStudent(int id) {

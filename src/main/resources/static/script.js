@@ -109,18 +109,18 @@ function loadStudents(){
     getStudents(function(responseData){
         console.log("eeee");
         const tableBody = $("#studentTable");
-        // $("#studentTable").addClass("ds-student-table");
         tableBody.empty();
-        responseData.forEach((student, i) => {
-            const pink = i % 2 === 0 ? "pink-row" : ""
+        responseData.forEach((student) => {
+            const rowClass = getStudentRowClass(student);
+            console.log("student:", student)
             tableBody.append(`
-                    <tr data-id="${student.id}" data-name="${student.name}" data-instructor-name="${student.instructorName}" 
+                    <tr  data-id="${student.id}" data-name="${student.name}" data-instructor-name="${student.instructorName}" 
                     data-hours-done="${student.hoursDone}" data-course-id="${student.courseId}">
-                        <td>${student.name}</td>
-                        <td>${student.courseId}</td>
-                        <td>${student.instructorName}</td>
-                        <td>${student.hoursDone}</td>
-                        <td>
+                        <td class="${rowClass}">${student.name}</td>
+                        <td class="${rowClass}">${student.courseId}</td>
+                        <td class="${rowClass}">${student.instructorName}</td>
+                        <td class="${rowClass}">${student.hoursDone}</td>
+                        <td class="${rowClass}">
                         <button class="btn btn-info btn-sm edit-student">Edit</button>
                         <button class="btn btn-warning btn-sm delete-student">Delete</button>
                         </td>
@@ -128,6 +128,13 @@ function loadStudents(){
             `)
         });
     });
+}
+
+function getStudentRowClass(student) {
+    if (student.hoursDone > 10 && !student.secondPayment) {
+        return "payment-warning-row";
+    }
+    return "";
 }
 
 function loadInstructors(){
@@ -143,13 +150,15 @@ function loadInstructors(){
 }
 
 
-export function updateStudentModalFields(id, name, courseId, instructorName, hoursDone) {
-    console.log("editStudent: ", name, courseId, instructorName, hoursDone);
+export function updateStudentModalFields(id, name, courseId, instructorName, hoursDone, firstPayment, secondPayment) {
+    console.log("editStudent: ", name, courseId, instructorName, hoursDone, firstPayment, secondPayment);
     $("#editStudentId").val(id);
     $("#editStudentName").val(name);
     $("#editStudentCourseNr").val(courseId);
     $("#editStudentInstructor").val(instructorName);
     $("#editStudentHoursDone").val(hoursDone);
+    $("#editFirstPayment").prop("checked", firstPayment);
+    $("#editSecondPaymentStudent").prop("checked", secondPayment);
 }
 
 export function handleEditStudentSubmit(event) {
@@ -161,6 +170,8 @@ export function handleEditStudentSubmit(event) {
         courseId: $("#editStudentCourseNr").val(),
         instructorName: $("#editStudentInstructor").val(),
         hoursDone: $("#editStudentHoursDone").val(),
+        firstPayment: $("#editFirstPayment").is(":checked"),
+        secondPayment: $("#editSecondPayment").is(":checked"),
     };
     console.log(studentData)
 
@@ -183,6 +194,8 @@ export function handleCreateStudentSubmit(event) {
         courseId: $("#addStudentCourseNr").val(),
         instructorName: $("#addStudentInstructor").val(),
         hoursDone: $("#addStudentHoursDone").val(),
+        firstPayment: $("#addFirstPayment").is(":checked"),
+        secondPayment: $("#addSecondPayment").is(":checked"),
     };
     console.log(studentData)
 

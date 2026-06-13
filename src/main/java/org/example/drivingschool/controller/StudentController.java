@@ -1,16 +1,22 @@
 package org.example.drivingschool.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.example.drivingschool.models.Student;
-import org.example.drivingschool.repository.StudentRepository;
 import org.example.drivingschool.repository.InstructorRepository;
+import org.example.drivingschool.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/students")
@@ -42,7 +48,7 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<String> createStudent(@RequestBody Student student) {
         repository.createStudent(student);
-        return ResponseEntity.ok("Cyborg created successfully!");
+        return ResponseEntity.ok("Student created successfully!");
     }
 
     @DeleteMapping("/{Id}")
@@ -54,6 +60,6 @@ public class StudentController {
     @PutMapping("/{Id}")
     public ResponseEntity<String> updateStudent(@PathVariable int Id, @RequestBody Student student) {
         repository.updateStudent(Id, student);
-        return ResponseEntity.ok("Cyborg created successfully!");
+        return ResponseEntity.ok("Student created successfully!");
     }
 }
