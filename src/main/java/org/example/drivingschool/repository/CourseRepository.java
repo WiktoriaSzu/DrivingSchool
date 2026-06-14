@@ -1,12 +1,11 @@
 package org.example.drivingschool.repository;
 
-import org.example.drivingschool.models.Course;
-import org.example.drivingschool.models.Instructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.example.drivingschool.models.Course;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class CourseRepository {
     private final JdbcTemplate jdbcTemplate;

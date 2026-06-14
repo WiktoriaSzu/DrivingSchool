@@ -24,8 +24,8 @@ public class StudentRepository {
                     rs.getString("instructorName"),
                     rs.getInt("hoursDone"),
                     rs.getInt("id"),
-                    rs.getBoolean("firstPayment"),
-                    rs.getBoolean("secondPayment")
+                    rs.getBoolean("first_Payment"),
+                    rs.getBoolean("second_Payment")
             );
 
     public List<Student> getAllStudents() {
@@ -40,13 +40,13 @@ public class StudentRepository {
     }
 
     public void createStudent(Student student) {
-        String sql = "INSERT INTO students (name, courseId, instructorName, hoursDone) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO students (name, courseId, instructorName, hoursDone, first_Payment, second_Payment) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), student.isFirstPayment(), student.isSecondPayment());
     }
 
     public int updateStudent(int id, Student student) {
-        String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ?, firstPayment = ?, secondPayment = ?,  WHERE Id = ?";
-        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), id, student.isFirstPayment(), student.isSecondPayment());
+        String sql = "UPDATE students SET name = ?, courseId = ?, instructorName = ?, hoursDone = ?, first_Payment = ?, second_Payment = ?  WHERE id = ?";
+        return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), student.isFirstPayment(), student.isSecondPayment(), id);
     }
 
     public void deleteStudent(int id) {

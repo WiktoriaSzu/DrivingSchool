@@ -115,7 +115,7 @@ function loadStudents(){
             console.log("student:", student)
             tableBody.append(`
                     <tr  data-id="${student.id}" data-name="${student.name}" data-instructor-name="${student.instructorName}" 
-                    data-hours-done="${student.hoursDone}" data-course-id="${student.courseId}">
+                    data-hours-done="${student.hoursDone}" data-course-id="${student.courseId}" data-first-payment="${student.firstPayment}" data-second-payment="${student.secondPayment}">
                         <td class="${rowClass}">${student.name}</td>
                         <td class="${rowClass}">${student.courseId}</td>
                         <td class="${rowClass}">${student.instructorName}</td>
@@ -158,7 +158,7 @@ export function updateStudentModalFields(id, name, courseId, instructorName, hou
     $("#editStudentInstructor").val(instructorName);
     $("#editStudentHoursDone").val(hoursDone);
     $("#editFirstPayment").prop("checked", firstPayment);
-    $("#editSecondPaymentStudent").prop("checked", secondPayment);
+    $("#editSecondPayment").prop("checked", secondPayment);
 }
 
 export function handleEditStudentSubmit(event) {
@@ -223,6 +223,8 @@ $("#studentTable").on("click", ".edit-student", function () {
         row.data("course-id"),
         row.data("instructor-name"),
         row.data("hours-done"),
+        row.data("first-payment"),
+        row.data("second-payment")
     );
 });
 
