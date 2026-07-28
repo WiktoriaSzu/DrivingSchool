@@ -1,6 +1,7 @@
 package org.example.drivingschool.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.example.drivingschool.models.Student;
@@ -61,5 +62,15 @@ public class StudentController {
     public ResponseEntity<String> updateStudent(@PathVariable int Id, @RequestBody Student student) {
         repository.updateStudent(Id, student);
         return ResponseEntity.ok("Student created successfully!");
+    }
+
+    @PutMapping("/{id}/hours")
+    public ResponseEntity<String> addHours(
+        @PathVariable int id,
+        @RequestBody Map<String, Integer> body) {
+
+    repository.addHours(id, body.get("hours"));
+
+    return ResponseEntity.ok("Hours added successfully!");
     }
 }

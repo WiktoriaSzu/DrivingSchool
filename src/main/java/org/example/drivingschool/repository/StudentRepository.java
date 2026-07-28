@@ -53,4 +53,11 @@ public class StudentRepository {
         String sql = "DELETE FROM students WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public int addHours(int id, int hours) {
+    String sql =
+        "UPDATE students SET hoursDone = hoursDone + ? WHERE id = ?";
+
+    return jdbcTemplate.update(sql, hours, id);
+    }
 }

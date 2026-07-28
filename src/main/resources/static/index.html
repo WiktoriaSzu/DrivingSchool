@@ -28,39 +28,65 @@
     <!-- Student data will be inserted here dynamically -->
     </tbody>
 </table>
-<h2>Add Student</h2>
-<form id="addStudentForm">
-    <input type="hidden" id="addStudentId">
-    <div class="mb-2">
-        <label>Name:</label>
-        <input type="text" id="addStudentName" class="form-control" required>
+
+<div class="bottom-actions">
+<div class="action-box">
+    <h2>Add Student</h2>
+    <form id="addStudentForm">
+        <input type="hidden" id="addStudentId">
+        <div class="mb-2">
+            <label>Name:</label>
+            <input type="text" id="addStudentName" class="form-control" required>
+        </div>
+        <div class="mb-2">
+            <label>Course Nr:</label>
+            <input type="number" id="addStudentCourseNr" class="form-control" required>
+        </div>
+        <div class="mb-2">
+            <label for="addStudentInstructor">Instructor:</label>
+            <select name="instructor" id="addStudentInstructor">
+                <option value="Gosia">Gosia</option>
+                <option value="Kasia">Kasia</option>
+                <option value="Andrzej">Andrzej</option>
+            </select>
+        </div>
+        <div class="mb-2">
+            <label>Hours done:</label>
+            <input type="number" id="addStudentHoursDone" class="form-control" required>
+        </div>
+        <div class="mb-2">
+            <label>First Payment:</label>
+            <input type="checkbox" id="addFirstPayment">
+        </div>
+        <div class="mb-2">
+            <label>Second Payment:</label>
+            <input type="checkbox" id="addSecondPayment">
+        </div>
+        <button type="submit" id="addStudentButton" class="btn btn-success">Add Student</button>
+    </form>
     </div>
-    <div class="mb-2">
-        <label>Course Nr:</label>
-        <input type="number" id="addStudentCourseNr" class="form-control" required>
+    <div class="action-box">
+        <form id="addHoursForm">
+        <h3>Add Hours to Student</h3>
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Student Name"
+            required
+        >
+
+        <input
+            type="number"
+            id="hoursAmount"
+            placeholder="Amount of Hours"
+            required
+        >
+
+         <button type="submit">Add Hours</button>
+        </form>
     </div>
-    <div class="mb-2">
-        <label for="addStudentInstructor">Instructor:</label>
-        <select name="instructor" id="addStudentInstructor">
-            <option value="Gosia">Gosia</option>
-            <option value="Kasia">Kasia</option>
-            <option value="Andrzej">Andrzej</option>
-        </select>
-    </div>
-    <div class="mb-2">
-        <label>Hours done:</label>
-        <input type="number" id="addStudentHoursDone" class="form-control" required>
-    </div>
-    <div class="mb-2">
-        <label>First Payment:</label>
-        <input type="checkbox" id="addFirstPayment">
-    </div>
-    <div class="mb-2">
-        <label>Second Payment:</label>
-        <input type="checkbox" id="addSecondPayment">
-    </div>
-    <button type="submit" id="addStudentButton" class="btn btn-success">Add Student</button>
-</form>
+</div>
 <!--<h3>Log in</h3>-->
 <!--<form>-->
 <!--    <label for="username">Username</label>-->
@@ -91,7 +117,7 @@
                     </div>
                     <div class="mb-2">
                         <label>Instructor:</label>
-                        <input type="text" id="editStudentInstructor" class="form-control">
+                        <input type="text" id="ediatStudentInstructor" class="form-control">
                     </div>
                     <div class="mb-2">
                         <label>Hours done:</label>
