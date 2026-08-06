@@ -174,7 +174,7 @@ export function handleEditStudentSubmit(event) {
         name: $("#editStudentName").val(),
         courseId: $("#editStudentCourseNr").val(),
         instructorName: $("#editStudentInstructor").val(),
-        hoursDone: $("#editStudentHoursDone").val(),
+        hoursDone: Number($("#editStudentHoursDone").val()) + Number($("#editStudentAddHours").val()),
         firstPayment: $("#editFirstPayment").is(":checked"),
         secondPayment: $("#editSecondPayment").is(":checked"),
     };
@@ -182,9 +182,21 @@ export function handleEditStudentSubmit(event) {
 
     saveStudent(studentData, studentId, () => {
         alert("Student updated!");
-        $('#studentsModal').modal('hide');
         loadStudents();
-    });
+        $("#editStudentAddHours").val("");
+        updateStudentModalFields(
+            studentId,
+            studentData.name,
+            studentData.courseId,
+            studentData.instructorName,
+            studentData.hoursDone,
+            studentData.firstPayment,
+            studentData.secondPayment
+        );
+
+
+    }
+);
 }
 
 export function handleAddHoursSubmit(event) {
@@ -225,7 +237,7 @@ export function handleCreateStudentSubmit(event) {
         name: $("#addStudentName").val(),
         courseId: $("#addStudentCourseNr").val(),
         instructorName: $("#addStudentInstructor").val(),
-        hoursDone: $("#addStudentHoursDone").val(),
+        hoursDone: Number($("#addStudentHoursDone").val()) + Number($("#editStudentHoursDone").val()),
         firstPayment: $("#addFirstPayment").is(":checked"),
         secondPayment: $("#addSecondPayment").is(":checked"),
     };
