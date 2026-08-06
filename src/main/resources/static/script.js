@@ -42,6 +42,9 @@ export function searchName() {
 const InstructorInput = document.getElementById("instructorInput")
 InstructorInput.addEventListener("keyup", searchByInstructor);
 
+const CourseNrInput = document.getElementById("courseNrInput")
+CourseNrInput.addEventListener("keyup", searchByCourseNr);
+
 export function searchByInstructor() {
     let instructorInput, instructorFilter, instructorTable, instructorTr, instructorTd, instructorI, instructorTxtValue;
     instructorInput = document.getElementById("instructorInput");
@@ -56,6 +59,25 @@ export function searchByInstructor() {
                 instructorTr[instructorI].style.display = "";
             } else {
                 instructorTr[instructorI].style.display = "none";
+            }
+        }
+    }
+}
+
+export function searchByCourseNr() {
+    let input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("courseNrInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("studentTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
             }
         }
     }
