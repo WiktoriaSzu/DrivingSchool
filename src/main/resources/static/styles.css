@@ -6,6 +6,21 @@
     background-color: #ffe6e6 !important;
 }
 
+.table-scroll-container {
+    max-height: 65vh;
+    overflow-y: auto;
+    margin-top: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.table-scroll-container thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+}
+
 .bottom-actions {
     display: flex;
     gap: 20px;
