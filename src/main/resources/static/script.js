@@ -221,33 +221,6 @@ export function handleEditStudentSubmit(event) {
 );
 }
 
-export function handleAddHoursSubmit(event) {
-    event.preventDefault();
-
-    const studentName = $("#studentName").val();
-    const hours = Number($("#hoursAmount").val());
-
-    const student = students.find(
-        s => s.name === studentName
-    );
-
-    if (!student) {
-        alert("Student not found");
-        return;
-    }
-
-    $.ajax({
-        url: `${apiBaseUrl}/${student.id}/hours`,
-        type: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify({ hours }),
-        success: () => {
-            alert("Hours added!");
-            loadStudents();
-        }
-    });
-}
-
 
 export function handleCreateStudentSubmit(event) {
     event.preventDefault();
@@ -311,7 +284,6 @@ export function toggleStudentFormButtons(isEditing) {
     $("#updateStudentButton").toggleClass("d-none", !isEditing);
 }
 
-$("#addHoursForm").on("submit", handleAddHoursSubmit);
 
 
 

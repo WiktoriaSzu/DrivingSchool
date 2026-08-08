@@ -47,3 +47,50 @@
     padding: 8px;
     box-sizing: border-box;
 }
+
+#nameInput, #instructorInput, #courseNrInput {
+    border-radius: 20px;
+    border: 1.5px solid transparent;
+    padding: 7px 15px;
+    outline: none;
+    margin-right: 8px;
+    font-size: 0.945rem;
+    transition: box-shadow 0.2s;
+}
+
+#nameInput {
+    margin-left: 20px;
+}
+
+#nameInput {
+    background-color: #e8f0fb;
+    border-color: #b3c8f0;
+    color: #2c4a7c;
+}
+
+#instructorInput {
+    background-color: #e8f5ee;
+    border-color: #a8d5b5;
+    color: #2c5c3a;
+}
+
+#courseNrInput {
+    background-color: #fdf3e3;
+    border-color: #f0cc8a;
+    color: #7a5200;
+}
+
+#nameInput:focus {
+    box-shadow: 0 0 0 3px rgba(99, 149, 230, 0.3);
+    border-color: #6395e6;
+}
+
+#instructorInput:focus {
+    box-shadow: 0 0 0 3px rgba(80, 180, 110, 0.3);
+    border-color: #50b46e;
+}
+
+#courseNrInput:focus {
+    box-shadow: 0 0 0 3px rgba(230, 170, 50, 0.3);
+    border-color: #e6aa32;
+}
