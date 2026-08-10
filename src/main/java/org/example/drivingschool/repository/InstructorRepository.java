@@ -1,13 +1,12 @@
 package org.example.drivingschool.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.example.drivingschool.models.Instructor;
-import org.example.drivingschool.models.Student;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class InstructorRepository {

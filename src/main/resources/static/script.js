@@ -8,11 +8,8 @@ function callback(){
     const createStudentButton = document.getElementById("addStudentButton");
     createStudentButton.addEventListener("click", handleCreateStudentSubmit);
     const displayStudentsButton = document.getElementById("fetchStudents");
-    const editStudentButton = document.getElementById("updateStudentButton");
-    editStudentButton.addEventListener("click", handleEditStudentSubmit);
     displayStudentsButton.addEventListener("click", loadStudents);
-    // const loginBtn = document.getElementById("loginbtn");
-    // loginBtn.addEventListener("click", onLogInClick);
+    document.getElementById("editStudentForm").addEventListener("submit", handleEditStudentSubmit); // ADDED
 }
 
 document.addEventListener("DOMContentLoaded", callback);
@@ -192,11 +189,12 @@ export function handleEditStudentSubmit(event) {
     event.preventDefault();
 
     const studentId = $("#editStudentId").val();
+    const addHours = Number($("#editStudentAddHours").val());
     const studentData = {
         name: $("#editStudentName").val(),
         courseId: $("#editStudentCourseNr").val(),
         instructorName: $("#editStudentInstructor").val(),
-        hoursDone: Number($("#editStudentHoursDone").val()) + Number($("#editStudentAddHours").val()),
+        hoursDone: Number($("#editStudentHoursDone").val()) + addHours,
         firstPayment: $("#editFirstPayment").is(":checked"),
         secondPayment: $("#editSecondPayment").is(":checked"),
     };
@@ -204,6 +202,20 @@ export function handleEditStudentSubmit(event) {
 
     saveStudent(studentData, studentId, () => {
         alert("Student updated!");
+
+        
+    if (addHours > 0) {
+        fetch("/api/instructor-history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                studentId: Number(studentId),
+                instructorName: studentData.instructorName,
+                hours: addHours
+            })
+        }).then(() => loadStudentHistory(studentId));;
+    }
+
         loadStudents();
         $("#editStudentAddHours").val("");
         updateStudentModalFields(
@@ -232,7 +244,7 @@ export function handleCreateStudentSubmit(event) {
         name: $("#addStudentName").val(),
         courseId: $("#addStudentCourseNr").val(),
         instructorName: $("#addStudentInstructor").val(),
-        hoursDone: Number($("#addStudentHoursDone").val()) + Number($("#editStudentHoursDone").val()),
+        hoursDone: Number($("#addStudentHoursDone").val()),
         firstPayment: $("#addFirstPayment").is(":checked"),
         secondPayment: $("#addSecondPayment").is(":checked"),
     };
@@ -251,22 +263,6 @@ export function handleCreateStudentSubmit(event) {
     });
 }
 
-$("#studentTable").on("click", ".edit-student", function () {
-    console.log("edit clicked");
-    $('#studentsModal').modal('show');
-    const row = $(this).closest("tr");
-    toggleStudentFormButtons(true)
-    updateStudentModalFields(
-        row.data("id"),
-        row.data("name"),
-        row.data("course-id"),
-        row.data("instructor-name"),
-        row.data("hours-done"),
-        row.data("first-payment"),
-        row.data("second-payment")
-    );
-});
-
 $("#studentTable").on("click", ".delete-student", function () {
     const id = $(this).closest("tr").data("id");
     deleteStudent(id, loadStudents);
@@ -282,6 +278,47 @@ export function toggleStudentFormButtons(isEditing) {
     $("#cancelStudentEdit").toggleClass("d-none", !isEditing);
     $("#createStudentButton").toggleClass("d-none", isEditing);
     $("#updateStudentButton").toggleClass("d-none", !isEditing);
+}
+
+// Instructor history part
+
+
+$("#studentTable").on("click", ".edit-student", function () {
+    console.log("edit clicked");
+    $('#studentsModal').modal('show');
+    const row = $(this).closest("tr");
+    toggleStudentFormButtons(true);
+    updateStudentModalFields(
+        row.data("id"),
+        row.data("name"),
+        row.data("course-id"),
+        row.data("instructor-name"),
+        row.data("hours-done"),
+        row.data("first-payment"),
+        row.data("second-payment")
+    );
+    loadStudentHistory(row.data("id")); // load history when edit opens
+});
+
+async function loadStudentHistory(studentId) {
+    const tbody = $("#editStudentHistoryBody");
+    tbody.html(`<tr><td colspan="3">Loading...</td></tr>`);
+
+    const res = await fetch(`/api/instructor-history/student/${studentId}`);
+    const rows = await res.json();
+
+    if (!rows.length) {
+        tbody.html(`<tr><td colspan="3">No history found.</td></tr>`);
+        return;
+    }
+
+    tbody.html(rows.map(r => `
+        <tr>
+            <td>${r.historyId ?? ""}</td>
+            <td>${r.instructorName ?? r.instructorname ?? ""}</td>
+            <td>${r.hours ?? 0}</td>
+        </tr>
+    `).join(""));
 }
 
 

@@ -131,7 +131,31 @@
                         <label>Second payment:</label>
                         <input type="checkbox" id="editSecondPayment">
                     </div>
-                    <button type="submit" id="updateStudentButton" class="btn btn-success d-none">Update Student</button>
+                    <div class="mt-3 d-flex gap-3 align-items-start">
+                        <button type="submit" id="updateStudentButton" class="btn btn-success d-none">
+                            Update Student
+                        </button>
+
+                    <div class="flex-grow-1">
+                        <h6 class="mb-2">Instructor history</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>History ID</th>
+                                        <th>Instructor</th>
+                                        <th>Hours</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="editStudentHistoryBody">
+                                  <tr>
+                                    <td colspan="3">No history loaded.</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 </form>
             </div>
         </div>

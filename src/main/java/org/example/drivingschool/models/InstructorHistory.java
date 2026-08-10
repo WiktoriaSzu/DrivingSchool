@@ -2,15 +2,15 @@ package org.example.drivingschool.models;
 
 public class InstructorHistory {
     private int history_id;
-    private int id;
+    private int studentId;
     private String instructorName;
     private int hours;
     
 
 
-    public InstructorHistory(int history_id, int id, String instructorName, int hours) {
+    public InstructorHistory(int history_id, int studentId, String instructorName, int hours) {
         this.history_id = history_id;
-        this.id = id;
+        this.studentId = studentId;
         this.instructorName = instructorName;
         this.hours = hours;
     }
@@ -23,12 +23,12 @@ public class InstructorHistory {
         this.history_id = history_id;
     }
 
-    public int getId() {
-        return id;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public String getInstructorName() {
