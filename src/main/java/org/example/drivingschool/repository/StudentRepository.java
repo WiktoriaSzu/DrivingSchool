@@ -39,9 +39,9 @@ public class StudentRepository {
         return student;
     }
 
-    public void createStudent(Student student) {
-        String sql = "INSERT INTO students (name, courseId, instructorName, hoursDone, first_Payment, second_Payment) VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), student.isFirstPayment(), student.isSecondPayment());
+    public int createStudent(Student student) {
+        String sql = "INSERT INTO students (name, courseId, instructorName, hoursDone, first_Payment, second_Payment) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+        return jdbcTemplate.queryForObject(sql, Integer.class, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), student.isFirstPayment(), student.isSecondPayment());
     }
 
     public int updateStudent(int id, Student student) {

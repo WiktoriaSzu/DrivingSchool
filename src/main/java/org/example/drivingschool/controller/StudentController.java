@@ -47,9 +47,9 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createStudent(@RequestBody Student student) {
-        repository.createStudent(student);
-        return ResponseEntity.ok("Student created successfully!");
+    public ResponseEntity<Map<String, Integer>> createStudent(@RequestBody Student student) {
+        int id = repository.createStudent(student);
+        return ResponseEntity.ok(Map.of("id", id));
     }
 
     @DeleteMapping("/{Id}")

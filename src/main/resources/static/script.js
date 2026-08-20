@@ -254,8 +254,22 @@ export function handleCreateStudentSubmit(event) {
     //     console.log(response);
     // });
 
-    saveStudent(studentData, studentId, () => {
+    saveStudent(studentData, studentId, (response) => {
         alert(studentId ? "Student updated!" : "Student added!");
+
+        // adding a student creates instructor history if added already with hours
+        if (!studentId && studentData.hoursDone > 0) {    
+        fetch("/api/instructor-history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                studentId: response.id,
+                instructorName: studentData.instructorName,
+                hours: studentData.hoursDone
+            })
+        });
+    }
+
         $("#addStudentForm")[0].reset();
         $("#addStudentName").val("");
         toggleStudentFormButtons(false)
