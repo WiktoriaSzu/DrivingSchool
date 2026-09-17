@@ -54,7 +54,10 @@ public class StudentController {
 
     @DeleteMapping("/{Id}")
     public ResponseEntity<String> deleteStudent(@PathVariable int Id) {
-        repository.deleteStudent(Id);
+        int deletedRows = repository.deleteStudent(Id);
+        if (deletedRows == 0) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok("Student deleted successfully!");
     }
 

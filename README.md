@@ -1,160 +1,188 @@
 # Driving School Management System
 
-A full-stack web application for managing students and instructors at a driving school. Built with a **Spring Boot** REST API backend and a **vanilla JavaScript** frontend.
+A full-stack web application for managing the day-to-day operations of a driving school. Staff can manage students and instructors, track completed driving hours, and monitor payments through a browser-based interface.
 
----
+The project demonstrates a clear separation between a Spring Boot REST API, a PostgreSQL data layer, and a lightweight frontend served by the same application.
 
-## Features
+## What the application does
 
-- **Student Management** — Create, read, update, and delete student records
-- **Instructor Management** — Full CRUD operations for instructors
-- **Hour Tracking** — Increment driving hours for individual students
-- **Payment Tracking** — Track first and second payment status per student
-- **Live Search** — Filter the student table in real time by name or instructor
-- **Column Sorting** — Sort the table by Course Number or Hours Done
-- **Login Endpoint** — Session-based authentication endpoint (`/api/login`)
+- Manages student and instructor records with create, read, update, and delete operations
+- Tracks completed driving hours and supports adding hours without overwriting the existing total
+- Records first and second payment status for each student
+- Displays instructor history for a student
+- Provides live filtering by student name, instructor, and course number
+- Supports sorting by course number and completed hours
+- Protects application routes with Spring Security and Google OAuth2 login
+- Restricts OAuth2 access to an allowlist of approved email addresses
 
----
+## Highlights for reviewers
 
-## Tech Stack
+- **End-to-end feature ownership:** data models, SQL access, REST controllers, security configuration, and frontend interactions
+- **RESTful backend:** focused controllers for students, instructors, and instructor history
+- **Practical JDBC data access:** repositories use Spring Data JDBC and `JdbcTemplate` for explicit SQL queries
+- **Maintainable frontend:** ES modules separate API calls, event handling, and UI logic
+- **Security-aware configuration:** OAuth2 client secrets are supplied through environment variables rather than committed to source control
 
-| Layer      | Technology                        |
-|------------|-----------------------------------|
-| Backend    | Java 17, Spring Boot 3.4.4        |
-| Database   | PostgreSQL                        |
-| Data Access| Spring Data JDBC (`JdbcTemplate`) |
-| Build Tool | Maven                             |
-| Frontend   | HTML5, CSS3, JavaScript (ES Modules) |
-| UI Library | Bootstrap 5.3, jQuery 3.7         |
+## Tech stack
 
----
+| Area | Technology |
+| --- | --- |
+| Language | Java 17 |
+| Backend | Spring Boot 3.4.4, Spring Web |
+| Data access | Spring Data JDBC, `JdbcTemplate` |
+| Database | PostgreSQL |
+| Authentication | Spring Security, Google OAuth2 Client |
+| Frontend | HTML5, CSS3, JavaScript ES modules |
+| UI | Bootstrap 5.3, jQuery 3.7 |
+| Build and tests | Maven, Spring Boot Test |
 
-## Project Structure
+## Architecture
 
+```text
+Browser
+  |
+  +-- HTML / CSS / JavaScript modules
+  |
+  v
+Spring Boot application
+  +-- REST controllers
+  +-- Domain models
+  +-- JDBC repositories
+  +-- Spring Security + Google OAuth2
+  |
+  v
+PostgreSQL
 ```
+
+The frontend is served from Spring Boot's `static` resources, so the application can be run as a single deployable service during development.
+
+## Project structure
+
+```text
 src/
-├── main/
-│   ├── java/org/example/drivingschool/
-│   │   ├── controller/
-│   │   │   ├── StudentController.java    # REST endpoints for students
-│   │   │   ├── InstructorController.java # REST endpoints for instructors
-│   │   │   ├── CourseController.java
-│   │   │   └── LoginController.java      # Session-based login
-│   │   ├── models/
-│   │   │   ├── Student.java
-│   │   │   ├── Instructor.java
-│   │   │   └── LogIn.java
-│   │   └── repository/
-│   │       ├── StudentRepository.java    # SQL queries via JdbcTemplate
-│   │       └── InstructorRepository.java
-│   └── resources/
-│       ├── application.properties
-│       └── static/                       # Frontend assets served by Spring Boot
-│           ├── index.html
-│           ├── script.js                 # UI logic & event handling
-│           ├── api.js                    # Fetch/AJAX calls to REST API
-│           ├── events.js
-│           └── styles.css
-└── SQL/
-    ├── SeedScript                        # Database schema & seed data
-    └── transactions
+|- main/
+|  |- java/org/example/drivingschool/
+|  |  |- controller/       # REST API endpoints
+|  |  |- models/           # Student, instructor, course, and history models
+|  |  |- repository/       # PostgreSQL access through JdbcTemplate
+|  |  |- AllowedUserService.java
+|  |  `- SecurityConfig.java
+|  `- resources/
+|     |- application.properties
+|     `- static/            # HTML, CSS, and JavaScript frontend
+`- test/                    # Spring Boot test sources
+
+SQL/
+|- SeedScript               # Database setup and sample data
+`- transactions             # SQL transaction examples
 ```
 
----
-
-## REST API Endpoints
+## REST API overview
 
 ### Students — `/api/students`
 
-| Method | Endpoint              | Description                    |
-|--------|-----------------------|--------------------------------|
-| GET    | `/api/students`       | Retrieve all students          |
-| GET    | `/api/students/{id}`  | Retrieve a student by ID       |
-| POST   | `/api/students`       | Create a new student           |
-| PUT    | `/api/students/{id}`  | Update a student by ID         |
-| PUT    | `/api/students/{id}/hours` | Add driving hours to a student |
-| DELETE | `/api/students/{id}`  | Delete a student by ID         |
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/students` | List all students |
+| `GET` | `/api/students/{id}` | Get one student |
+| `POST` | `/api/students` | Create a student |
+| `PUT` | `/api/students/{id}` | Update a student |
+| `PUT` | `/api/students/{id}/hours` | Add driving hours |
+| `DELETE` | `/api/students/{id}` | Delete a student |
 
 ### Instructors — `/api/instructor`
 
-| Method | Endpoint                        | Description                         |
-|--------|---------------------------------|-------------------------------------|
-| GET    | `/api/instructor`               | Retrieve all instructors            |
-| GET    | `/api/instructor/{name}`        | Retrieve an instructor by name      |
-| GET    | `/api/instructor?name={name}`   | Get instructor by student name      |
-| POST   | `/api/instructor`               | Create a new instructor             |
-| PUT    | `/api/instructor/{name}`        | Update an instructor                |
-| DELETE | `/api/instructor/{name}`        | Delete an instructor                |
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/instructor` | List all instructors |
+| `GET` | `/api/instructor/{instructorName}` | Get one instructor |
+| `GET` | `/api/instructor?name={studentName}` | Find an instructor by student name |
+| `POST` | `/api/instructor` | Create an instructor |
+| `PUT` | `/api/instructor/{instructorName}` | Update an instructor |
+| `DELETE` | `/api/instructor/{instructorName}` | Delete an instructor |
 
-### Auth
+### Instructor history — `/api/instructor-history`
 
-| Method | Endpoint      | Description       |
-|--------|---------------|-------------------|
-| POST   | `/api/login`  | Login (admin/admin) |
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/instructor-history/student/{studentId}` | Get a student's instructor history |
+| `POST` | `/api/instructor-history` | Create a history entry |
+| `PUT` | `/api/instructor-history/{historyId}` | Update a history entry |
+| `DELETE` | `/api/instructor-history/student/{studentId}` | Delete history for a student |
 
----
-
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
-- Java 17+
-- Maven
+- Java 17 or newer
 - PostgreSQL
+- A Google OAuth2 application for local login
 
-### Database Setup
+### 1. Create the database
 
-1. Create a PostgreSQL database named `DrivingSchool`.
-2. Run the seed script to create tables and populate sample data:
+Create a PostgreSQL database named `DrivingSchool`, then use [`SQL/SeedScript`](./SQL/SeedScript) as the starting point for creating the tables and sample data.
 
-```sql
--- Located in SQL/SeedScript
-CREATE TABLE students (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50),
-    courseId INT,
-    instructorName VARCHAR(50),
-    hoursDone INT,
-    first_Payment BOOLEAN,
-    second_Payment BOOLEAN
-);
+### 2. Configure the application
 
-CREATE TABLE instructor (
-    instructorName VARCHAR(50) PRIMARY KEY,
-    description VARCHAR(150),
-    carNr INT
-);
-```
-
-### Configuration
-
-Update `src/main/resources/application.properties` with your database credentials:
+Update `src/main/resources/application.properties` with local database values. Keep passwords and OAuth credentials outside source control:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/DrivingSchool
 spring.datasource.username=your_username
 spring.datasource.password=your_password
+
+spring.security.oauth2.client.registration.google.client-id=${GOOGLE_CLIENT_ID}
+spring.security.oauth2.client.registration.google.client-secret=${GOOGLE_CLIENT_SECRET}
 ```
 
-### Run the Application
+Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in the environment used to start the application. Configure the OAuth2 redirect URI for local development as:
+
+```text
+http://localhost:8080/login/oauth2/code/google
+```
+
+The allowed email address is configured in `AllowedUserService`. Update that allowlist for your own local account before signing in.
+
+### 3. Run the application
+
+On macOS or Linux:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-Then open your browser at **http://localhost:8080**.
+On Windows:
 
----
+```powershell
+.\mvnw.cmd spring-boot:run
+```
 
-## Screenshots
+Open [http://localhost:8080](http://localhost:8080) and sign in with an authorized Google account.
 
-> Add screenshots of the UI here to make the README more visual for recruiters.
+### 4. Run tests
 
----
+```bash
+./mvnw test
+```
 
-## Future Improvements
+On Windows, use `.\mvnw.cmd test`.
 
-- Role-based authentication with Spring Security
-- Course management module
-- Pagination for large student lists
-- Unit and integration test coverage
+## Configuration and security notes
+
+- Do not commit database passwords, Google client secrets, or other credentials.
+- Google OAuth2 is the configured authentication flow for protected routes.
+- The allowlist in `AllowedUserService` is intentionally simple and suitable for this small application; a production deployment would typically move authorized users to a database or identity-management system.
+- The legacy `/api/login` endpoint remains in the codebase for experimentation, but the browser application is configured around OAuth2 authentication.
+
+## Roadmap
+
+- Add role-based authorization with Spring Security
+- Move authorized users from a hardcoded allowlist to persistent storage
+- Complete course management functionality
+- Add pagination and server-side filtering for larger datasets
+- Expand unit, repository, controller, and integration test coverage
+- Add automated CI checks and deployment documentation
+
+## License
+
+This project is currently intended as a portfolio and learning project. No open-source license has been added yet.

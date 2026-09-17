@@ -24,9 +24,12 @@ export function deleteStudent(id, callback) {
         $.ajax({
             url: `${apiBaseUrl}/${id}`,
             type: "DELETE",
-            success: callback
+            success: callback,
+            error: function (xhr) {
+                console.error("Failed to delete student:", xhr.responseText);
+                alert("The student could not be deleted.");
+            }
         });
-        console.log("wiwiwi")
     }
 }
 

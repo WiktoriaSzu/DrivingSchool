@@ -7,6 +7,7 @@ import org.example.drivingschool.models.Student;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class StudentRepository {
@@ -49,9 +50,10 @@ public class StudentRepository {
         return jdbcTemplate.update(sql, student.getName(), student.getCourseId(), student.getInstructorName(), student.getHoursDone(), student.isFirstPayment(), student.isSecondPayment(), id);
     }
 
-    public void deleteStudent(int id) {
-        String sql = "DELETE FROM students WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+    @Transactional
+    public int deleteStudent(int id) {
+        jdbcTemplate.update("DELETE FROM instructor_history WHERE student_id = ?", id);
+        return jdbcTemplate.update("DELETE FROM students WHERE id = ?", id);
     }
 
     public int addHours(int id, int hours) {
