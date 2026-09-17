@@ -172,7 +172,6 @@ On Windows, use `.\mvnw.cmd test`.
 - Do not commit database passwords, Google client secrets, or other credentials.
 - Google OAuth2 is the configured authentication flow for protected routes.
 - The allowlist in `AllowedUserService` is intentionally simple and suitable for this small application; a production deployment would typically move authorized users to a database or identity-management system.
-- The legacy `/api/login` endpoint remains in the codebase for experimentation, but the browser application is configured around OAuth2 authentication.
 
 ## Roadmap
 
