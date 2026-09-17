@@ -128,6 +128,26 @@ function sortColumn(n){
  * Clears the existing table rows before populating with updated data.
  * Each row is styled based on payment status via getStudentRowClass.
  */
+function createTextCell(value, rowClass = "") {
+    return $("<td>")
+        .addClass(rowClass)
+        .text(value ?? "");
+}
+
+function createActionCell(rowClass = "") {
+    return $("<td>")
+        .addClass("action-cell")
+        .addClass(rowClass)
+        .append(
+            $("<button>")
+                .addClass("btn btn-info btn-sm edit-student")
+                .text("Edit"),
+            $("<button>")
+                .addClass("btn btn-warning btn-sm delete-student")
+                .text("Delete")
+        );
+}
+
 function loadStudents(){
     console.log("dddd");
     getStudents(function(responseData){
@@ -137,19 +157,25 @@ function loadStudents(){
         responseData.forEach((student) => {
             const rowClass = getStudentRowClass(student);
             console.log("student:", student)
-            tableBody.append(`
-                    <tr  data-id="${student.id}" data-name="${student.name}" data-instructor-name="${student.instructorName}" 
-                    data-hours-done="${student.hoursDone}" data-course-id="${student.courseId}" data-first-payment="${student.firstPayment}" data-second-payment="${student.secondPayment}">
-                        <td class="${rowClass}">${student.name}</td>
-                        <td class="${rowClass}">${student.courseId}</td>
-                        <td class="${rowClass}">${student.instructorName}</td>
-                        <td class="${rowClass}">${student.hoursDone}</td>
-                        <td class="${rowClass}">
-                        <button class="btn btn-info btn-sm edit-student">Edit</button>
-                        <button class="btn btn-warning btn-sm delete-student">Delete</button>
-                        </td>
-                    </tr>
-            `)
+
+            const row = $("<tr>")
+                .attr("data-id", student.id)
+                .attr("data-name", student.name)
+                .attr("data-instructor-name", student.instructorName)
+                .attr("data-hours-done", student.hoursDone)
+                .attr("data-course-id", student.courseId)
+                .attr("data-first-payment", student.firstPayment)
+                .attr("data-second-payment", student.secondPayment);
+
+            row.append(
+                createTextCell(student.name, rowClass),
+                createTextCell(student.courseId, rowClass),
+                createTextCell(student.instructorName, rowClass),
+                createTextCell(student.hoursDone, rowClass),
+                createActionCell(rowClass)
+            );
+
+            tableBody.append(row);
         });
     });
 }
@@ -166,9 +192,11 @@ function loadInstructors(){
         const formOptions = $("#addStudentInstructor");
         formOptions.empty();
         responseData.forEach((instructor) => {
-            formOptions.append(`
-                <option value="${instructor.instructorName}">${instructor.instructorName}</option>
-        `)
+            formOptions.append(
+                $("<option>")
+                    .val(instructor.instructorName)
+                    .text(instructor.instructorName)
+            );
         })
     })
 }
@@ -316,23 +344,36 @@ $("#studentTable").on("click", ".edit-student", function () {
 
 async function loadStudentHistory(studentId) {
     const tbody = $("#editStudentHistoryBody");
-    tbody.html(`<tr><td colspan="3">Loading...</td></tr>`);
+    tbody.empty();
+    tbody.append(
+        $("<tr>").append(
+            $("<td>").attr("colspan", "3").text("Loading...")
+        )
+    );
 
     const res = await fetch(`/api/instructor-history/student/${studentId}`);
     const rows = await res.json();
 
+    tbody.empty();
+
     if (!rows.length) {
-        tbody.html(`<tr><td colspan="3">No history found.</td></tr>`);
+        tbody.append(
+            $("<tr>").append(
+                $("<td>").attr("colspan", "3").text("No history found.")
+            )
+        );
         return;
     }
 
-    tbody.html(rows.map(r => `
-        <tr>
-            <td>${r.historyId ?? ""}</td>
-            <td>${r.instructorName ?? r.instructorname ?? ""}</td>
-            <td>${r.hours ?? 0}</td>
-        </tr>
-    `).join(""));
+    rows.forEach((rowData) => {
+        const row = $("<tr>");
+        row.append(
+            $("<td>").text(rowData.historyId ?? ""),
+            $("<td>").text(rowData.instructorName ?? rowData.instructorname ?? ""),
+            $("<td>").text(rowData.hours ?? 0)
+        );
+        tbody.append(row);
+    });
 }
 
 
