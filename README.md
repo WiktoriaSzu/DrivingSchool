@@ -167,21 +167,6 @@ Open [http://localhost:8080](http://localhost:8080) and sign in with an authoriz
 
 On Windows, use `.\mvnw.cmd test`.
 
-## Configuration and security notes
-
-- Do not commit database passwords, Google client secrets, or other credentials.
-- Google OAuth2 is the configured authentication flow for protected routes.
-- The allowlist in `AllowedUserService` is intentionally simple and suitable for this small application; a production deployment would typically move authorized users to a database or identity-management system.
-
-## Roadmap
-
-- Add role-based authorization with Spring Security
-- Move authorized users from a hardcoded allowlist to persistent storage
-- Complete course management functionality
-- Add pagination and server-side filtering for larger datasets
-- Expand unit, repository, controller, and integration test coverage
-- Add automated CI checks and deployment documentation
-
 ## License
 
 This project is currently intended as a portfolio and learning project. No open-source license has been added yet.
