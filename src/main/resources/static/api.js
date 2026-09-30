@@ -1,5 +1,5 @@
-export const apiBaseUrl = "/api/students";
-export const instructorsApiUrl = "/api/instructor";
+export const apiBaseUrl = "api/students";
+export const instructorsApiUrl = "api/instructor";
 
 export function getStudents(callback) {
     $.get(apiBaseUrl, callback);
