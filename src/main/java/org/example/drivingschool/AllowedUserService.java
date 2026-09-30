@@ -14,7 +14,8 @@ public class AllowedUserService extends DefaultOAuth2UserService {
 
     // quickest option: hardcode allowed emails here
     private static final Set<String> ALLOWED_EMAILS = Set.of(
-            "szulikwiktoria99@gmail.com"
+            "szulikwiktoria99@gmail.com", 
+            "kristianselvaag@gmail.com"
     );
 
     @Override
