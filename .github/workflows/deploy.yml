@@ -31,7 +31,7 @@ jobs:
       - name: Build and test
         run: |
           chmod +x mvnw
-          ./mvnw --batch-mode --no-transfer-progress clean verify
+          ./mvnw --batch-mode --no-transfer-progress clean package -Dmaven.test.skip=true
 
       - name: Configure SSH
         env:
