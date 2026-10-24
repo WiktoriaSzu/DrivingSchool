@@ -15,8 +15,11 @@ The project demonstrates a clear separation between a Spring Boot REST API, a Po
 - Protects application routes with Spring Security and Google OAuth2 login
 - Restricts OAuth2 access to an allowlist of approved email addresses
 
+### 
 <img width="454" height="293" alt="Image" src="https://github.com/user-attachments/assets/8bf772e1-aca5-4c9c-b413-fa7d81bfb0fc" />
+###
 <img width="869" height="413" alt="Image" src="https://github.com/user-attachments/assets/39a60a80-d17f-429b-9b18-e9b6af400646" />
+###
 <img width="456" height="425" alt="Image" src="https://github.com/user-attachments/assets/2e045877-6f8e-4449-8a7f-f8dd87947452" />
 
 ## Highlights for reviewers
