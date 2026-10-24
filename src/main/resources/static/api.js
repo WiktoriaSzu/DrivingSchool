@@ -44,5 +44,4 @@ export function saveStudent (studentData, id, callback){
         data: JSON.stringify(studentData),
         success: callback
     });
-    console.log("student saved?")
 }

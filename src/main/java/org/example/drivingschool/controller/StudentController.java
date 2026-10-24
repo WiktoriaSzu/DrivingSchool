@@ -63,8 +63,11 @@ public class StudentController {
 
     @PutMapping("/{Id}")
     public ResponseEntity<String> updateStudent(@PathVariable int Id, @RequestBody Student student) {
-        repository.updateStudent(Id, student);
-        return ResponseEntity.ok("Student created successfully!");
+        int updatedRows = repository.updateStudent(Id, student);
+        if (updatedRows == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Student updated successfully!");
     }
 
     @PutMapping("/{id}/hours")

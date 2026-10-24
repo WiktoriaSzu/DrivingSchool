@@ -1,15 +1,13 @@
 import {getStudents, createStudent, deleteStudent, saveStudent, getInstructors} from "./api.js";
 
-console.log("heelo world");
 loadInstructors();
 
 function callback(){
-    console.log("Document is ready");
-    const createStudentButton = document.getElementById("addStudentButton");
-    createStudentButton.addEventListener("click", handleCreateStudentSubmit);
+    document.getElementById("addStudentForm").addEventListener("submit", handleCreateStudentSubmit);
     const displayStudentsButton = document.getElementById("fetchStudents");
     displayStudentsButton.addEventListener("click", loadStudents);
-    document.getElementById("editStudentForm").addEventListener("submit", handleEditStudentSubmit); // ADDED
+    document.getElementById("editStudentForm").addEventListener("submit", handleEditStudentSubmit);
+    loadStudents();
 }
 
 document.addEventListener("DOMContentLoaded", callback);
@@ -149,14 +147,11 @@ function createActionCell(rowClass = "") {
 }
 
 function loadStudents(){
-    console.log("dddd");
     getStudents(function(responseData){
-        console.log("eeee");
         const tableBody = $("#studentTable");
         tableBody.empty();
         responseData.forEach((student) => {
             const rowClass = getStudentRowClass(student);
-            console.log("student:", student)
 
             const row = $("<tr>")
                 .attr("data-id", student.id)
@@ -203,7 +198,6 @@ function loadInstructors(){
 
 
 export function updateStudentModalFields(id, name, courseId, instructorName, hoursDone, firstPayment, secondPayment) {
-    console.log("editStudent: ", name, courseId, instructorName, hoursDone, firstPayment, secondPayment);
     $("#editStudentId").val(id);
     $("#editStudentName").val(name);
     $("#editStudentCourseNr").val(courseId);
@@ -226,7 +220,6 @@ export function handleEditStudentSubmit(event) {
         firstPayment: $("#editFirstPayment").is(":checked"),
         secondPayment: $("#editSecondPayment").is(":checked"),
     };
-    console.log(studentData)
 
     saveStudent(studentData, studentId, () => {
         alert("Student updated!");
@@ -265,8 +258,6 @@ export function handleEditStudentSubmit(event) {
 export function handleCreateStudentSubmit(event) {
     event.preventDefault();
 
-    alert("TESTING");
-
     const studentId = $("#addStudentId").val();
     const studentData = {
         name: $("#addStudentName").val(),
@@ -276,11 +267,6 @@ export function handleCreateStudentSubmit(event) {
         firstPayment: $("#addFirstPayment").is(":checked"),
         secondPayment: $("#addSecondPayment").is(":checked"),
     };
-    console.log(studentData)
-
-    // createStudent(studentData, function(response){
-    //     console.log(response);
-    // });
 
     saveStudent(studentData, studentId, (response) => {
         alert(studentId ? "Student updated!" : "Student added!");
@@ -326,7 +312,6 @@ export function toggleStudentFormButtons(isEditing) {
 
 
 $("#studentTable").on("click", ".edit-student", function () {
-    console.log("edit clicked");
     $('#studentsModal').modal('show');
     const row = $(this).closest("tr");
     toggleStudentFormButtons(true);

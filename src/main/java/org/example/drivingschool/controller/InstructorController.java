@@ -54,7 +54,10 @@ public class InstructorController {
 
         @DeleteMapping("/{instructorName}")
         public ResponseEntity<String> deleteInstructor(@PathVariable String instructorName) {
-            repository.deleteInstructor(instructorName);
+            int deletedRows = repository.deleteInstructor(instructorName);
+            if (deletedRows == 0) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok("Instructor deleted successfully!");
         }
 

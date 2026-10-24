@@ -27,7 +27,7 @@ The project demonstrates a clear separation between a Spring Boot REST API, a Po
 
 | Area | Technology |
 | --- | --- |
-| Language | Java 17 |
+| Language | Java 21 |
 | Backend | Spring Boot 3.4.4, Spring Web |
 | Data access | Spring Data JDBC, `JdbcTemplate` |
 | Database | PostgreSQL |
@@ -63,7 +63,7 @@ src/
 |- main/
 |  |- java/org/example/drivingschool/
 |  |  |- controller/       # REST API endpoints
-|  |  |- models/           # Student, instructor, course, and history models
+|  |  |- models/           # Student, instructor, and history models
 |  |  |- repository/       # PostgreSQL access through JdbcTemplate
 |  |  |- AllowedUserService.java
 |  |  `- SecurityConfig.java
@@ -74,7 +74,6 @@ src/
 
 SQL/
 |- SeedScript               # Database setup and sample data
-`- transactions             # SQL transaction examples
 ```
 
 ## REST API overview
@@ -114,7 +113,7 @@ SQL/
 
 ### Prerequisites
 
-- Java 17 or newer
+- Java 21 or newer
 - PostgreSQL
 - A Google OAuth2 application for local login
 
@@ -141,7 +140,13 @@ Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in the environment used to sta
 http://localhost:8080/login/oauth2/code/google
 ```
 
-The allowed email address is configured in `AllowedUserService`. Update that allowlist for your own local account before signing in.
+Set `ALLOWED_EMAILS` in the same environment — a comma-separated list of the email addresses that may sign in. The allowlist is read from configuration in `AllowedUserService`; a blank or missing list lets no one log in.
+
+```powershell
+$env:ALLOWED_EMAILS = "you@example.com,other@example.com"
+```
+
+On the deployment server, set `ALLOWED_EMAILS` alongside the Google keys in the service's environment (systemd drop-in, e.g. `Environment=ALLOWED_EMAILS=...` in `/etc/systemd/system/drivingschool.service.d/override.conf`, then restart the service) **before** deploying this change: pushing to `master` deploys right away, and without the variable set on the server nobody can log in.
 
 ### 3. Run the application
 

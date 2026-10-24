@@ -50,11 +50,11 @@ public class InstructorRepository {
 
     public int updateInstructor(String instructorName, Instructor instructor) {
         String sql = "UPDATE instructor SET instructorName = ?, description = ?, carNr = ? WHERE instructorName = ?";
-        return jdbcTemplate.update(sql, instructor.getInstructorName(), instructor.getDescription(), instructor.getCarNr());
+        return jdbcTemplate.update(sql, instructor.getInstructorName(), instructor.getDescription(), instructor.getCarNr(), instructorName);
     }
 
-    public void deleteInstructor(String instructorName) {
+    public int deleteInstructor(String instructorName) {
         String sql = "DELETE FROM instructor WHERE instructorName = ?";
-        jdbcTemplate.update(sql, instructorName);
+        return jdbcTemplate.update(sql, instructorName);
     }
 }

@@ -19,7 +19,7 @@ public class SecurityConfig {
                 .ignoringRequestMatchers("/api/**")
             )
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/index.html", "/script.js", "/api.js", "/events.js", "/styles.css").permitAll()
+                .requestMatchers("/index.html", "/script.js", "/api.js", "/styles.css").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
