@@ -2,8 +2,6 @@
 
 A full-stack web application for managing the day-to-day operations of a driving school. Staff can manage students and instructors, track completed driving hours, and monitor payments through a browser-based interface.
 
-The project demonstrates a clear separation between a Spring Boot REST API, a PostgreSQL data layer, and a lightweight frontend served by the same application.
-
 ## What the application does
 
 - Manages student and instructor records with create, read, update, and delete operations
@@ -24,13 +22,6 @@ The project demonstrates a clear separation between a Spring Boot REST API, a Po
 ### Edit student
 <img width="456" height="425" alt="Image" src="https://github.com/user-attachments/assets/2e045877-6f8e-4449-8a7f-f8dd87947452" />
 
-## Highlights for reviewers
-
-- **End-to-end feature ownership:** data models, SQL access, REST controllers, security configuration, and frontend interactions
-- **RESTful backend:** focused controllers for students, instructors, and instructor history
-- **Practical JDBC data access:** repositories use Spring Data JDBC and `JdbcTemplate` for explicit SQL queries
-- **Maintainable frontend:** ES modules separate API calls, event handling, and UI logic
-- **Security-aware configuration:** OAuth2 client secrets are supplied through environment variables rather than committed to source control
 
 ## Tech stack
 
@@ -38,12 +29,77 @@ The project demonstrates a clear separation between a Spring Boot REST API, a Po
 | --- | --- |
 | Language | Java 21 |
 | Backend | Spring Boot 3.4.4, Spring Web |
-| Data access | Spring Data JDBC, `JdbcTemplate` |
+| Data access | JdbcTemplate and SQL |
 | Database | PostgreSQL |
 | Authentication | Spring Security, Google OAuth2 Client |
 | Frontend | HTML5, CSS3, JavaScript ES modules |
-| UI | Bootstrap 5.3, jQuery 3.7 |
+| UI | Bootstrap 5.3 |
 | Build and tests | Maven, Spring Boot Test |
+
+## Getting started
+
+### Prerequisites
+
+- Java 21 or newer
+- PostgreSQL
+- A Google OAuth2 application for local login
+
+### 1. Create the database
+
+Create a PostgreSQL database named `DrivingSchool`, then use [`SQL/SeedScript`](./SQL/SeedScript) as the starting point for creating the tables and sample data.
+
+### 2. Configure the application
+
+Passwords and keys are read from environment variables, so nothing secret is stored in the code. Set all four of these in the terminal you start the application from:
+
+| Variable | What it's for |
+| --- | --- |
+| `databasedrivingschool` | Password for the PostgreSQL user `postgres` |
+| `GOOGLE_CLIENT_ID` | Client ID of your Google OAuth2 app |
+| `GOOGLE_CLIENT_SECRET` | Client secret of your Google OAuth2 app |
+| `ALLOWED_EMAILS` | Comma-separated list of email addresses that may sign in. If it's empty or missing, nobody can sign in. |
+
+On Windows (PowerShell):
+
+```powershell
+$env:databasedrivingschool = "your_database_password"
+$env:GOOGLE_CLIENT_ID = "your_client_id"
+$env:GOOGLE_CLIENT_SECRET = "your_client_secret"
+$env:ALLOWED_EMAILS = "you@example.com,other@example.com"
+```
+
+On macOS or Linux:
+
+```bash
+export databasedrivingschool="your_database_password"
+export GOOGLE_CLIENT_ID="your_client_id"
+export GOOGLE_CLIENT_SECRET="your_client_secret"
+export ALLOWED_EMAILS="you@example.com,other@example.com"
+```
+
+In your Google OAuth2 app, add this redirect URI for local development:
+
+```text
+http://localhost:8080/login/oauth2/code/google
+```
+
+The database address and user are set in `src/main/resources/application.properties`: the application connects to `jdbc:postgresql://localhost:5432/DrivingSchool` as the user `postgres`. To use a different database or user, set `SPRING_DATASOURCE_URL` or `SPRING_DATASOURCE_USERNAME`, which override those values.
+
+### 3. Run the application
+
+Run by executing the following command:
+
+```
+./mvnw spring-boot:run
+```
+
+Open [http://localhost:8080](http://localhost:8080) and sign in with an authorized Google account.
+
+### 4. Run tests
+
+```
+./mvnw test
+```
 
 ## Architecture
 
@@ -117,70 +173,3 @@ SQL/
 | `POST` | `/api/instructor-history` | Create a history entry |
 | `PUT` | `/api/instructor-history/{historyId}` | Update a history entry |
 | `DELETE` | `/api/instructor-history/student/{studentId}` | Delete history for a student |
-
-## Getting started
-
-### Prerequisites
-
-- Java 21 or newer
-- PostgreSQL
-- A Google OAuth2 application for local login
-
-### 1. Create the database
-
-Create a PostgreSQL database named `DrivingSchool`, then use [`SQL/SeedScript`](./SQL/SeedScript) as the starting point for creating the tables and sample data.
-
-### 2. Configure the application
-
-Update `src/main/resources/application.properties` with local database values. Keep passwords and OAuth credentials outside source control:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/DrivingSchool
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-
-spring.security.oauth2.client.registration.google.client-id=${GOOGLE_CLIENT_ID}
-spring.security.oauth2.client.registration.google.client-secret=${GOOGLE_CLIENT_SECRET}
-```
-
-Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in the environment used to start the application. Configure the OAuth2 redirect URI for local development as:
-
-```text
-http://localhost:8080/login/oauth2/code/google
-```
-
-Set `ALLOWED_EMAILS` in the same environment — a comma-separated list of the email addresses that may sign in. The allowlist is read from configuration in `AllowedUserService`; a blank or missing list lets no one log in.
-
-```powershell
-$env:ALLOWED_EMAILS = "you@example.com,other@example.com"
-```
-
-On the deployment server, set `ALLOWED_EMAILS` alongside the Google keys in the service's environment (systemd drop-in, e.g. `Environment=ALLOWED_EMAILS=...` in `/etc/systemd/system/drivingschool.service.d/override.conf`, then restart the service) **before** deploying this change: pushing to `master` deploys right away, and without the variable set on the server nobody can log in.
-
-### 3. Run the application
-
-On macOS or Linux:
-
-```bash
-./mvnw spring-boot:run
-```
-
-On Windows:
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-Open [http://localhost:8080](http://localhost:8080) and sign in with an authorized Google account.
-
-### 4. Run tests
-
-```bash
-./mvnw test
-```
-
-On Windows, use `.\mvnw.cmd test`.
-
-## License
-
-This project is currently intended as a portfolio and learning project. No open-source license has been added yet.
